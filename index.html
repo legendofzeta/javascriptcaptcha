@@ -1,0 +1,91 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  #captcha-form {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #captcha-canvas {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  input[type="text"] {
+    width: 200px;
+    height: 30px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+  }
+
+  button[type="submit"] {
+    width: 100px;
+    height: 40px;
+    font-size: 18px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
+</style>
+
+<form id="captcha-form" action="tracking/index.html" method="post">
+  <h1>Please complete the captcha to access the next page</h1>
+  <div>
+    <label for="captcha">Enter the characters you see in the image below:</label>
+    <canvas id="captcha-canvas" width="200" height="50"></canvas>
+    <input type="text" name="captcha" id="captcha" required>
+  </div>
+  <button type="submit">Verify</button>
+</form>
+
+<script>
+  // Generate a random captcha code
+  let captchaCode = Math.random().toString(36).substring(7);
+
+  // Get the canvas element
+  const canvas = document.getElementById('captcha-canvas');
+
+  // Get the context of the canvas
+  const context = canvas.getContext('2d');
+
+  // Set the font and text baseline for the captcha code
+  context.font = '30px Arial';
+  context.textBaseline = 'top';
+
+  // Draw the captcha code on the canvas
+  context.fillText(captchaCode, 0, 0);
+
+  // Add a submit event listener to the form
+  document.getElementById('captcha-form').addEventListener('submit', function(event) {
+    // Get the value of the captcha input field
+    let userInput = document.getElementById('captcha').value;
+
+    // Check if the user's input matches the captcha code
+    if (userInput !== captchaCode) {
+      // If the input does not match, prevent the form from being submitted
+      event.preventDefault();
+
+      // Show an error message
+      alert('The captcha code you entered is incorrect. Please try again.');
+    }
+  });
+</script>
+
